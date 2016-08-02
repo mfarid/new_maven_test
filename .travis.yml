@@ -1,0 +1,29 @@
+addons:
+  artifacts:
+    debug: true
+    paths:
+    - libs.zip
+    - build.zip
+    - testbuild.zip
+    target_paths: 7a48e613-61cf-45ac-8a06-6987cdd1aacb
+after_success:
+- ./df-build.sh
+before_install:
+- sed -i.bak -e 's|https://nexus.codehaus.org/snapshots/|https://oss.sonatype.org/content/repositories/codehaus-snapshots/|g'
+  $HOME/.m2/settings.xml
+cache:
+  directories:
+  - $HOME/.m2
+jdk:
+- oraclejdk8
+language: java
+notifications:
+  webhooks:
+    on_failure: always
+    on_start: always
+    on_success: always
+    urls:
+    - http://insightsservice-dev1.us-east-1.elasticbeanstalk.com/travisWebHookListener?build_id=7a48e613-61cf-45ac-8a06-6987cdd1aacb
+script: mvn test-compile
+sudo: 'false'
+# Modified by Insights Service at 2016-08-02 19:56:41.361793
